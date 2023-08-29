@@ -1,0 +1,37 @@
+{
+  "channels": [
+    {
+      "channelName": "laodong",
+      "mappings":
+      {
+        "title": "title",
+        "enclosure.url": "image",
+        "link": "link",
+        "pubDate": "pubDate",
+        "guid": "guid"
+      }
+    },
+    {
+      "channelName": "vnexpress",
+      "mappings":
+      {
+        "title": "title",
+        "description": "image",
+        "link": "link",
+        "pubDate": "pubDate",
+        "guid": "guid"
+      }
+    },
+    {
+      "channelName": "thanhnien",
+      "mappings":
+      {
+        "title": "title",
+        "description.img#scr": "image",
+        "link": "link",
+        "pubDate": "pubDate",
+        "guid": "guid"
+      }
+    }
+  ]
+}
