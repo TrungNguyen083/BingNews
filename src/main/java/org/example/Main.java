@@ -10,14 +10,15 @@ import java.io.IOException;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException {
+    public static void main(String[] args) throws Exception {
         String bingNewsConfigPath = "";
         BingNewsConfig bingNewsConfig = ConfigService.readConfig(bingNewsConfigPath, BingNewsConfig.class);
         String mappingConfigPath = "";
         MappingConfig mappingConfig = ConfigService.readConfig(mappingConfigPath, MappingConfig.class);
+        String weatherApiUrl = "";
         List<News> newsList = BingNewsController.getAllNews(bingNewsConfig, mappingConfig);
         List<AdArticle> adArticleList = BingNewsController.getAdArticles();
-        List<WeatherInfo> weatherInfoList = BingNewsController.getWeatherInfo();
+        WeatherInfo weatherInfoList = BingNewsController.getWeatherInfo(weatherApiUrl);
         List<FinancialInfo> financialInfoList = BingNewsController.getFinancialInfo();
         List<SportInfo> sportInfoList = BingNewsController.getSportInfo();
         List<MicrosoftFeed> microsoftFeedList = BingNewsController.getMicrosoftFeed();

@@ -72,7 +72,24 @@ public class BingNewsController {
         return null;
     }
 
-    public static List<WeatherInfo> getWeatherInfo() {
+    public static WeatherInfo getWeatherInfo(String weatherApiUrl) {
+        String apiRequest = readApiRequest(weatherApiUrl);
+        WeatherInfo weatherInfo = parseWeatherInfo(apiRequest);
+        return weatherInfo;
+    }
+
+    private static WeatherInfo parseWeatherInfo(String apiRequest) {
+        String locationName = "";
+        String localtime = "";
+        List<HourTemperature> listHourTemperature = parseWeatherItems(apiRequest);
+        return new WeatherInfo(locationName,localtime,listHourTemperature);
+    }
+
+    private static List<HourTemperature> parseWeatherItems(String apiRequest) {
+        return null;
+    }
+
+    private static String readApiRequest(String weatherApiUrl) {
         return null;
     }
 
@@ -95,4 +112,5 @@ public class BingNewsController {
     public static List<TrendingNews> getTrendingNews() {
         return null;
     }
+
 }
