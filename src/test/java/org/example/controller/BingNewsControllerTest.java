@@ -16,8 +16,16 @@ import java.util.List;
 public class BingNewsControllerTest extends TestCase {
 
     @Test
-    public void testGetAllNews() {
+    public void testGetAllNews() throws Exception {
+        String bingNewsConfigPath = ".\\src\\main\\resources\\BingNewsConfig.json";
+        BingNewsConfig bingNewsConfig = ConfigService.readConfig(bingNewsConfigPath, BingNewsConfig.class);
+        String mappingConfigPath = ".\\src\\main\\resources\\MappingConfig.json";
+        MappingConfig mappingConfig = ConfigService.readConfig(mappingConfigPath, MappingConfig.class);
+        List<News> newsList = BingNewsController.getAllNews(bingNewsConfig, mappingConfig);
 
+//        for (var news : newsList) {
+//            System.out.println(news.getTitle());
+//        }
     }
 
     public void testGetAdArticles() {

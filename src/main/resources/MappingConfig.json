@@ -2,36 +2,119 @@
   "channels": [
     {
       "channelName": "laodong",
-      "mappings":
-      {
-        "title": "title",
-        "enclosure.url": "image",
-        "link": "link",
-        "pubDate": "pubDate",
-        "guid": "guid"
-      }
+      "mappings": [
+        {
+          "propertyName": "title",
+          "tagName": "title"
+        },
+        {
+          "propertyName": "description",
+          "tagName": "description"
+        },
+        {
+          "propertyName": "link",
+          "tagName": "link"
+        },
+        {
+          "propertyName": "image",
+          "tagName": "enclosure.url"
+        },
+        {
+          "propertyName": "pubDate",
+          "tagName": "pubDate"
+        },
+        {
+          "propertyName": "guid",
+          "tagName": "guid"
+        }
+      ]
     },
     {
-      "channelName": "vnexpress",
-      "mappings":
-      {
-        "title": "title",
-        "description": "image",
-        "link": "link",
-        "pubDate": "pubDate",
-        "guid": "guid"
-      }
+      "channelName": "VnExpress",
+      "mappings": [
+        {
+          "propertyName": "title",
+          "tagName": "title"
+        },
+        {
+          "propertyName": "description",
+          "tagName": "description"
+        },
+        {
+          "propertyName": "link",
+          "tagName": "link"
+        },
+        {
+          "propertyName": "image",
+          "tagName": "description.img#src"
+        },
+        {
+          "propertyName": "pubDate",
+          "tagName": "pubDate"
+        },
+        {
+          "propertyName": "guid",
+          "tagName": "guid"
+        }
+      ]
     },
     {
-      "channelName": "thanhnien",
-      "mappings":
-      {
-        "title": "title",
-        "description.img#scr": "image",
-        "link": "link",
-        "pubDate": "pubDate",
-        "guid": "guid"
-      }
+      "channelName": "tienphong",
+      "mappings": [
+        {
+          "propertyName": "title",
+          "tagName": "title"
+        },
+        {
+          "propertyName": "description",
+          "tagName": "description"
+        },
+        {
+          "propertyName": "link",
+          "tagName": "link"
+        },
+        {
+          "propertyName": "image",
+          "tagName": "image"
+        },
+        {
+          "propertyName": "pubDate",
+          "tagName": "pubDate"
+        },
+        {
+          "propertyName": "guid",
+          "tagName": "guid"
+        }
+      ]
+    },
+    {
+      "channelName": "GoogleTrend",
+      "mappings": [
+        {
+          "propertyName": "title",
+          "tagName": "title"
+        },
+        {
+          "propertyName": "description",
+          "tagName": "description"
+        },
+        {
+          "propertyName": "link",
+          "tagName": "link"
+        },
+        {
+          "propertyName": "image",
+          "tagName": "ht:picture"
+        },
+        {
+          "propertyName": "pubDate",
+          "tagName": "pubDate"
+        },
+        {
+          "propertyName": "guid",
+          "tagName": "link"
+        }
+      ]
     }
   ]
 }
