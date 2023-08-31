@@ -84,13 +84,13 @@ public class BingNewsController {
         for (var tag : channelConfig.getImgTagList()) {
             item = ((Element) item).getElementsByTagName(tag).item(0);
         }
+        if(item == null) return null;
 
         if (channelConfig.getImgAttr() != null) {
             String imageUrl = ((Element) item).getAttribute(channelConfig.getImgAttr());
             return imageUrl;
         }
         return item.getTextContent();
-        // return null;
     }
 
     public static void setPropertyValue(Object obj, String fieldName, Object value) throws Exception {

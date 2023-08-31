@@ -18,9 +18,8 @@ public class BingNewsControllerTest extends TestCase {
         PropertyMapConfig propertyMapConfig = ConfigService.readConfig(mappingConfigPath, PropertyMapConfig.class);
         List<News> newsList = BingNewsController.getAllNews(bingNewsConfig, propertyMapConfig);
 
-        for (var news : newsList) {
-            news.printOutInfo();
-        }
+        assertTrue(newsList.size() > 0);
+        assertNotNull(newsList);
     }
 
     public void testGetAdArticles() {

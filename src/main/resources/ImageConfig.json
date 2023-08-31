@@ -15,6 +15,13 @@
       "imgAttr": "url"
     },
     {
+      "channelName": "NewYorkTimes",
+      "imgTagList": [
+        "media:content"
+      ],
+      "imgAttr": "url"
+    },
+    {
       "channelName": "GoogleTrend",
       "imgTagList": [
         "ht:picture"

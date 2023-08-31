@@ -13,6 +13,11 @@
           "channelID": "2",
           "channelName": "laodong",
           "rssURL": "https://laodong.vn/rss/the-gioi.rss"
+        },
+        {
+          "channelID": "3",
+          "channelName": "NewYorkTimes",
+            "rssURL": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"
         }
       ]
     },

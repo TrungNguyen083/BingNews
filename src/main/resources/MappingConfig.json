@@ -51,6 +51,31 @@
       ]
     },
     {
+      "channelName": "NewYorkTimes",
+      "mappings": [
+        {
+          "propertyName": "title",
+          "tagName": "title"
+        },
+        {
+          "propertyName": "description",
+          "tagName": "description"
+        },
+        {
+          "propertyName": "link",
+          "tagName": "link"
+        },
+        {
+          "propertyName": "pubDate",
+          "tagName": "pubDate"
+        },
+        {
+          "propertyName": "guid",
+          "tagName": "guid"
+        }
+      ]
+    },
+    {
       "channelName": "GoogleTrend",
       "mappings": [
         {
