@@ -1,0 +1,25 @@
+{
+  "channels": [
+    {
+      "channelName": "tienphong",
+      "imgTagList": [
+        "image"
+      ],
+      "imgAttr": null
+    },
+    {
+      "channelName": "laodong",
+      "imgTagList": [
+        "enclosure"
+      ],
+      "imgAttr": "url"
+    },
+    {
+      "channelName": "GoogleTrend",
+      "imgTagList": [
+        "ht:picture"
+      ],
+      "imgAttr": null
+    }
+  ]
+}

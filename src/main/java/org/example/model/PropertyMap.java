@@ -2,7 +2,7 @@ package org.example.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Mappings {
+public class PropertyMap {
     private String propertyName;
     private String tagName;
 

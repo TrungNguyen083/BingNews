@@ -8,7 +8,9 @@ public class Channel {
     private String channelID;
     private String channelName;
     private String rssURL;
-    private List<Mappings> mappings;
+    private List<PropertyMap> propertyMaps;
+    private List<String> imgTagList;
+    private String imgAttr;
 
     @JsonProperty("channelID")
     public String getChannelID() { return channelID; }
@@ -25,7 +27,17 @@ public class Channel {
     @JsonProperty("rssURL")
     public void setRSSURL(String value) { this.rssURL = value; }
     @JsonProperty("mappings")
-    public List<Mappings> getMappings() { return mappings; }
+    public List<PropertyMap> getPropertyMaps() { return propertyMaps; }
     @JsonProperty("mappings")
-    public void setMappings(List<Mappings> value) { this.mappings = value; }
+    public void setPropertyMaps(List<PropertyMap> value) { this.propertyMaps = value; }
+
+    @JsonProperty("imgTagList")
+    public List<String> getImgTagList() { return imgTagList; }
+    @JsonProperty("imgTagList")
+    public void setImgTagList(List<String> value) { this.imgTagList = value; }
+
+    @JsonProperty("imgAttr")
+    public String getImgAttr() { return imgAttr; }
+    @JsonProperty("imgAttr")
+    public void setImgAttr(String value) { this.imgAttr = value; }
 }

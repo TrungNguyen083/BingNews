@@ -10,9 +10,9 @@ public class Main {
         String bingNewsConfigPath = "";
         BingNewsConfig bingNewsConfig = ConfigService.readConfig(bingNewsConfigPath, BingNewsConfig.class);
         String mappingConfigPath = "";
-        MappingConfig mappingConfig = ConfigService.readConfig(mappingConfigPath, MappingConfig.class);
+        PropertyMapConfig propertyMapConfig = ConfigService.readConfig(mappingConfigPath, PropertyMapConfig.class);
         String weatherApiUrl = "";
-        List<News> newsList = BingNewsController.getAllNews(bingNewsConfig,mappingConfig);
+        List<News> newsList = BingNewsController.getAllNews(bingNewsConfig, propertyMapConfig);
         List<AdArticle> adArticleList = BingNewsController.getAdArticles();
         WeatherInfo weatherInfoList = BingNewsController.getWeatherInfo(weatherApiUrl);
         List<FinancialInfo> financialInfoList = BingNewsController.getFinancialInfo();

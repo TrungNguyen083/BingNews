@@ -16,39 +16,6 @@
           "tagName": "link"
         },
         {
-          "propertyName": "image",
-          "tagName": "enclosure.url"
-        },
-        {
-          "propertyName": "pubDate",
-          "tagName": "pubDate"
-        },
-        {
-          "propertyName": "guid",
-          "tagName": "guid"
-        }
-      ]
-    },
-    {
-      "channelName": "VnExpress",
-      "mappings": [
-        {
-          "propertyName": "title",
-          "tagName": "title"
-        },
-        {
-          "propertyName": "description",
-          "tagName": "description"
-        },
-        {
-          "propertyName": "link",
-          "tagName": "link"
-        },
-        {
-          "propertyName": "image",
-          "tagName": "description.img#src"
-        },
-        {
           "propertyName": "pubDate",
           "tagName": "pubDate"
         },
@@ -74,10 +41,6 @@
           "tagName": "link"
         },
         {
-          "propertyName": "image",
-          "tagName": "image"
-        },
-        {
           "propertyName": "pubDate",
           "tagName": "pubDate"
         },
@@ -101,10 +64,6 @@
         {
           "propertyName": "link",
           "tagName": "link"
-        },
-        {
-          "propertyName": "image",
-          "tagName": "ht:picture"
         },
         {
           "propertyName": "pubDate",

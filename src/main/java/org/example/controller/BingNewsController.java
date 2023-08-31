@@ -10,13 +10,15 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BingNewsController {
-    public static List<News> getAllNews(BingNewsConfig bingNewsConfig, MappingConfig mappingConfig) throws Exception {
+    public static List<News> getAllNews(BingNewsConfig bingNewsConfig, PropertyMapConfig propertyMapConfig) throws Exception {
         //TODO: Get all rssUrl in file config
         List<Channel> allChannel = getAllChannel(bingNewsConfig);
         //TODO: Read all rssUrl and get NodeList and parse it to List<News>
@@ -25,12 +27,12 @@ public class BingNewsController {
             NodeList nodeList = getNodeListFromRssUrl(channel.getRSSURL());
             for (int i = 0; i < nodeList.getLength(); i++) {
                 Channel channelConfig = channel;
-                channelConfig.setMappings(mappingConfig.getChannels()
+                channelConfig.setPropertyMaps(propertyMapConfig.getChannels()
                         .stream()
                         .filter(x -> x.getChannelName().equals(channel.getChannelName()))
                         .findFirst()
                         .orElse(null)
-                        .getMappings());
+                        .getPropertyMaps());
                 News news = parseNodeItem(nodeList.item(i), channelConfig, News.class);
                 newsList.add(news);
             }
@@ -50,12 +52,45 @@ public class BingNewsController {
         if (item.getNodeType() == Node.ELEMENT_NODE) {
             T instance = classTarget.newInstance();
             Element itemElement = (Element) item;
-            for (var mapping : channel.getMappings()) {
-                setPropertyValue(instance, mapping.getPropertyName(), itemElement.getElementsByTagName(mapping.getTagName()).item(0).getTextContent());
+            for (var propertyMap : channel.getPropertyMaps()) {
+                String propertyName = propertyMap.getPropertyName();
+                String value = itemElement.getElementsByTagName(propertyMap.getTagName()).item(0).getTextContent();
+                setPropertyValue(instance, propertyName, value);
+
             }
+            String imageUrl = getImageValue(item, channel);
+            setPropertyValue(instance, "image", imageUrl);
             return instance;
         }
         return null;
+    }
+
+    public static String getImageValue(Node item, Channel channel) throws IOException {
+        String imageConfigPath = ".\\src\\main\\resources\\ImageConfig.json";
+        ImageConfig imageConfig = ConfigService.readConfig(imageConfigPath, ImageConfig.class);
+        Channel channelConfig = channel;
+        Channel matchingChannel = imageConfig.getChannels()
+                .stream()
+                .filter(x -> x.getChannelName().equals(channel.getChannelName()))
+                .findFirst()
+                .orElse(null);
+
+        channelConfig.setImgTagList(matchingChannel != null ? matchingChannel.getImgTagList() : null);
+        channelConfig.setImgAttr(matchingChannel != null ? matchingChannel.getImgAttr() : null);
+        return mapImageConfig(item, channelConfig);
+    }
+
+    private static String mapImageConfig(Node item, Channel channelConfig) {
+        for (var tag : channelConfig.getImgTagList()) {
+            item = ((Element) item).getElementsByTagName(tag).item(0);
+        }
+
+        if (channelConfig.getImgAttr() != null) {
+            String imageUrl = ((Element) item).getAttribute(channelConfig.getImgAttr());
+            return imageUrl;
+        }
+        return item.getTextContent();
+        // return null;
     }
 
     public static void setPropertyValue(Object obj, String fieldName, Object value) throws Exception {
@@ -66,12 +101,9 @@ public class BingNewsController {
 
     public static List<Channel> getAllChannel(BingNewsConfig bingNewsConfig) {
         var categories = bingNewsConfig.getCategories();
-        List<Channel> listChannel = new ArrayList<>();
-        for (var category : categories) {
-            for (var channel : category.getListChanel()) {
-                listChannel.add(channel);
-            }
-        }
+        List<Channel> listChannel = categories.stream()
+                .flatMap(category -> category.getListChanel().stream())
+                .collect(Collectors.toList());
         return listChannel;
     }
 

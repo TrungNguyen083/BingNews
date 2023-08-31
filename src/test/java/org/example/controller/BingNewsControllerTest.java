@@ -2,15 +2,10 @@ package org.example.controller;
 
 import junit.framework.TestCase;
 import org.example.model.BingNewsConfig;
-import org.example.model.MappingConfig;
+import org.example.model.PropertyMapConfig;
 import org.example.model.News;
 import org.junit.Test;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BingNewsControllerTest extends TestCase {
@@ -20,12 +15,12 @@ public class BingNewsControllerTest extends TestCase {
         String bingNewsConfigPath = ".\\src\\main\\resources\\BingNewsConfig.json";
         BingNewsConfig bingNewsConfig = ConfigService.readConfig(bingNewsConfigPath, BingNewsConfig.class);
         String mappingConfigPath = ".\\src\\main\\resources\\MappingConfig.json";
-        MappingConfig mappingConfig = ConfigService.readConfig(mappingConfigPath, MappingConfig.class);
-        List<News> newsList = BingNewsController.getAllNews(bingNewsConfig, mappingConfig);
+        PropertyMapConfig propertyMapConfig = ConfigService.readConfig(mappingConfigPath, PropertyMapConfig.class);
+        List<News> newsList = BingNewsController.getAllNews(bingNewsConfig, propertyMapConfig);
 
-//        for (var news : newsList) {
-//            System.out.println(news.getTitle());
-//        }
+        for (var news : newsList) {
+            news.printOutInfo();
+        }
     }
 
     public void testGetAdArticles() {
