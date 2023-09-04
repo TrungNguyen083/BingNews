@@ -4,47 +4,47 @@ import java.util.UUID;
 
 public class HourTemperature {
     private String ID;
-    private String hour;
-    private String temperature;
+    private String time;
+    private String icon;
+    private String tempC;
     private String humidity;
-    private String temperatureImg;
 
     public HourTemperature() {
     }
 
-    public HourTemperature(String hour, String temperature, String humidity, String temperatureImg) {
+    public HourTemperature(String time, String tempC, String humidity, String icon) {
         this.ID = UUID.randomUUID().toString();
-        this.hour = hour;
-        this.temperature = temperature;
+        this.time = time;
+        this.tempC = tempC;
         this.humidity = humidity;
-        this.temperatureImg = temperatureImg;
+        this.icon = icon;
     }
 
     public String getID() {
         return ID;
     }
 
-    public String getHour() {
-        return hour;
+    public String getTime() {
+        return time;
     }
 
-    public String getTemperature() {
-        return temperature;
+    public String getIcon() {
+        return icon;
+    }
+
+    public String getTempC() {
+        return tempC;
     }
 
     public String getHumidity() {
         return humidity;
     }
 
-    public String getTemperatureImg() {
-        return temperatureImg;
-    }
-
     public void printInfo() {
-        System.out.println("Hour: " + hour);
-        System.out.println("Temperature: " + temperature);
+        System.out.println("Time: " + time);
+        System.out.println("Temperature: " + tempC);
         System.out.println("Humidity: " + humidity);
-        System.out.println("Temperature Image: " + temperatureImg);
+        System.out.println("Temperature Image: " + icon);
         System.out.println("--------------------------------------------------");
     }
 }

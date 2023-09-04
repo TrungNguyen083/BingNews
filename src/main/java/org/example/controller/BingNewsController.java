@@ -5,13 +5,17 @@ import org.example.model.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.example.model.config.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +88,7 @@ public class BingNewsController {
         for (var tag : channelConfig.getImgTagList()) {
             item = ((Element) item).getElementsByTagName(tag).item(0);
         }
-        if(item == null) return null;
+        if (item == null) return null;
 
         if (channelConfig.getImgAttr() != null) {
             String imageUrl = ((Element) item).getAttribute(channelConfig.getImgAttr());
@@ -111,24 +115,67 @@ public class BingNewsController {
         return null;
     }
 
-    public static WeatherInfo getWeatherInfo(String weatherApiUrl) {
-        String apiRequest = readApiRequest(weatherApiUrl);
-        WeatherInfo weatherInfo = parseWeatherInfo(apiRequest);
+    public static WeatherInfo getWeatherInfo(WeatherConfig weatherConfig) throws Exception {
+        WeatherChannel weatherChannel = weatherConfig.getWeatherChannels().get(0);
+        String apiRequest = readApiRequest(weatherChannel.getAPIUrl());
+        WeatherInfo weatherInfo = parseWeatherInfo(apiRequest, weatherChannel);
         return weatherInfo;
     }
 
-    private static WeatherInfo parseWeatherInfo(String apiRequest) {
-        String locationName = "";
-        String localtime = "";
-        List<HourTemperature> listHourTemperature = parseWeatherItems(apiRequest);
-        return new WeatherInfo(locationName, localtime, listHourTemperature);
+    public static String readApiRequest(String apiUrl) throws IOException {
+        URL url = new URL(apiUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        String result = "";
+        connection.setRequestMethod("GET");
+        int responseCode = connection.getResponseCode();
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            StringBuilder response = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+            result = response.toString();
+        }
+        return result;
     }
 
-    private static List<HourTemperature> parseWeatherItems(String apiRequest) {
-        return null;
+    private static WeatherInfo parseWeatherInfo(String apiRequest, WeatherChannel weatherChannel) throws Exception {
+        WeatherInfo weatherInfo = new WeatherInfo();
+        for (var item : weatherChannel.getMappings()) {
+            String value = extractApiValue(apiRequest, item.getStartTag(), item.getEndTag());
+            setPropertyValue(weatherInfo, item.getPropertyName(), value);
+        }
+        List<HourTemperature> listHourTemperature = parseHourTemperatures(weatherChannel);
+        setPropertyValue(weatherInfo, weatherChannel.getHourTag().getPropertyName(), listHourTemperature);
+        return weatherInfo;
     }
 
-    private static String readApiRequest(String weatherApiUrl) {
+    private static List<HourTemperature> parseHourTemperatures(WeatherChannel weatherChannel) throws Exception {
+        String apiHoursUrl;
+        List<HourTemperature> listHourTemperature = new ArrayList<>();
+        for (int i = 0; i < 24; i++) {
+            HourTemperature hourTemperature = new HourTemperature();
+            apiHoursUrl = weatherChannel.getAPIUrl() + weatherChannel.getHourTag().getExtendURL() + i;
+            String apiHours = readApiRequest(apiHoursUrl);
+            String hourTag = extractApiValue(apiHours, weatherChannel.getHourTag().getStartTag(), weatherChannel.getHourTag().getEndTag());
+            for (var item: weatherChannel.getHourTag().getListHourTemperature()) {
+                String value = extractApiValue(hourTag, item.getStartTag(), item.getEndTag());
+                setPropertyValue(hourTemperature, item.getPropertyName(), value);
+            }
+            listHourTemperature.add(hourTemperature);
+        }
+        return listHourTemperature;
+    }
+
+    private static String extractApiValue(String json, String startTag, String endTag) {
+        int startIndex = json.indexOf(startTag);
+        int endIndex = json.indexOf(endTag, startIndex + startTag.length());
+        if (startIndex != -1 && endIndex != -1) {
+            return json.substring(startIndex + startTag.length(), endIndex);
+        }
         return null;
     }
 

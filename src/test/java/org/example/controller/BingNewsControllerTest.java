@@ -1,11 +1,14 @@
 package org.example.controller;
 
 import junit.framework.TestCase;
-import org.example.model.BingNewsConfig;
-import org.example.model.PropertyMapConfig;
+import org.example.model.WeatherInfo;
+import org.example.model.config.BingNewsConfig;
+import org.example.model.config.PropertyMapConfig;
 import org.example.model.News;
+import org.example.model.config.WeatherConfig;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.List;
 
 public class BingNewsControllerTest extends TestCase {
@@ -25,7 +28,13 @@ public class BingNewsControllerTest extends TestCase {
     public void testGetAdArticles() {
     }
 
-    public void testGetWeatherInfo() {
+    public void testGetWeatherInfo() throws Exception {
+        String weatherConfigPath = ".\\src\\main\\resources\\WeatherConfig.json";
+        WeatherConfig weatherConfig = ConfigService.readConfig(weatherConfigPath, WeatherConfig.class);
+        WeatherInfo weatherInfo = BingNewsController.getWeatherInfo(weatherConfig);
+        weatherInfo.printInfo();
+
+        assertNotNull(weatherInfo);
     }
 
     public void testGetFinancialInfo() {

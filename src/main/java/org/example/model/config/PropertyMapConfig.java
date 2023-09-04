@@ -1,10 +1,10 @@
-package org.example.model;
+package org.example.model.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class ImageConfig {
+public class PropertyMapConfig {
     private List<Channel> channels;
 
     @JsonProperty("channels")

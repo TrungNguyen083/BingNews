@@ -5,17 +5,17 @@ import java.util.UUID;
 
 public class WeatherInfo {
     private String ID;
-    private String place;
+    private String locationName;
     private List<HourTemperature> listHourTemperature;
-    private String date;
+    private String localTime;
 
     public WeatherInfo() {
     }
 
-    public WeatherInfo(String place, String date, List<HourTemperature> listHourTemperature) {
+    public WeatherInfo(String locationName, String localTime, List<HourTemperature> listHourTemperature) {
         this.ID = UUID.randomUUID().toString();
-        this.place = place;
-        this.date = date;
+        this.locationName = locationName;
+        this.localTime = localTime;
         this.listHourTemperature = listHourTemperature;
     }
 
@@ -23,21 +23,21 @@ public class WeatherInfo {
         return ID;
     }
 
-    public String getPlaceID() {
-        return place;
+    public String getLocationName() {
+        return locationName;
     }
 
     public List<HourTemperature> getListHourTemperature() {
         return listHourTemperature;
     }
 
-    public String getDate() {
-        return date;
+    public String getLocalTime() {
+        return localTime;
     }
 
     public void printInfo() {
-        System.out.println("Place: " + place);
-        System.out.println("Date: " + date);
+        System.out.println("Location Name: " + locationName);
+        System.out.println("Local Time: " + localTime);
         for (HourTemperature hourTemperature : listHourTemperature) {
             hourTemperature.printInfo();
         }
