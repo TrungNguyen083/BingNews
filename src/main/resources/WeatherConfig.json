@@ -1,48 +1,45 @@
 {
-  "weatherChannels": [
+  "method": "GET",
+  "uri": "https://api.weatherapi.com/v1/forecast.json?key=f845cd8d15dc447784562628232208&q=Quan%2012,Ho%20Chi%20Minh",
+  "keyName": "X-RapidAPI-Key",
+  "keyValue": "1",
+  "hostName": "X-RapidAPI-Host",
+  "hostValue": "1",
+  "forecastTag": "/forecast/forecastday",
+  "weatherMappings": [
     {
-      "apiName": "weatherapi",
-      "apiUrl": "https://api.weatherapi.com/v1/forecast.json?key=f845cd8d15dc447784562628232208&q=Quan%2012,Ho%20Chi%20Minh",
-      "mappings": [
-        {
-          "propertyName": "locationName",
-          "startTag": "{\"name\":\"",
-          "endTag": "\","
-        },
-        {
-          "propertyName": "localTime",
-          "startTag": "\"localtime\":\"",
-          "endTag": "\"}"
-        }
-      ],
-      "hourTag": {
-        "propertyName": "listHourTemperature",
-        "extendUrl": "&hour=",
-        "startTag": "\"hour\":[{",
-        "endTag": "}]",
-        "hourTempConfig": [
-          {
-            "propertyName": "time",
-            "startTag": "\"time\":\"",
-            "endTag": "\","
-          },
-          {
-            "propertyName": "icon",
-            "startTag": "\"icon\":\"",
-            "endTag": "\","
-          },
-          {
-            "propertyName": "tempC",
-            "startTag": "\"temp_c\":",
-            "endTag": ","
-          },
-          {
-            "propertyName": "humidity",
-            "startTag": "\"humidity\":",
-            "endTag": ","
-          }
-        ]
-      }
+      "propertyName": "locationName",
+      "tagName": "/location/name"
+    },
+    {
+      "propertyName": "countryName",
+      "tagName": "/location/country"
+    },
+    {
+      "propertyName": "localTime",
+      "tagName": "/location/localtime"
     }
-  ]
+  ],
+  "hourTag": {
+    "propertyName": "listHourTemperature",
+    "tag": "/hour",
+    "hourMappings": [
+      {
+        "propertyName": "time",
+        "tagName": "/time"
+      },
+      {
+        "propertyName": "icon",
+        "tagName": "/temp_c"
+      },
+      {
+        "propertyName": "tempC",
+        "tagName": "/condition/icon"
+      },
+      {
+        "propertyName": "humidity",
+        "tagName": "/humidity"
+      }
+    ]
+  }
 }

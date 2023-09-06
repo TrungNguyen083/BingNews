@@ -1,0 +1,52 @@
+{
+  "method": "GET",
+  "uri": "https://api-football-beta.p.rapidapi.com/fixtures?date=2023-09-04",
+  "keyName": "X-RapidAPI-Key",
+  "keyValue": "e11a191d21msh8ec4a3d96bea5cep19cabejsnd1b4e0c53b59",
+  "hostName": "X-RapidAPI-Host",
+  "hostValue": "api-football-beta.p.rapidapi.com",
+  "itemTag": "response",
+  "sportMappings": [
+    {
+      "propertyName": "date",
+      "tagName": "/fixture/date"
+    }
+  ],
+  "matchTag": {
+    "propertyName": "matches",
+    "matchMappings": [
+      {
+        "propertyName": "leagueName",
+        "tagName": "/league/name"
+      },
+      {
+        "propertyName": "leagueLogo",
+        "tagName": "/league/logo"
+      },
+      {
+        "propertyName": "homeTeamName",
+        "tagName": "/teams/home/name"
+      },
+      {
+        "propertyName": "homeTeamLogo",
+        "tagName": "/teams/home/logo"
+      },
+      {
+        "propertyName": "awayTeamName",
+        "tagName": "/teams/away/name"
+      },
+      {
+        "propertyName": "awayTeamLogo",
+        "tagName": "/teams/away/logo"
+      },
+      {
+        "propertyName": "homeTeamGoal",
+        "tagName": "/goals/home"
+      },
+      {
+        "propertyName": "awayTeamGoal",
+        "tagName": "/goals/away"
+      }
+    ]
+  }
+}

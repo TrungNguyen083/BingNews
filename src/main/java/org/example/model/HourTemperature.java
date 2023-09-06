@@ -41,10 +41,10 @@ public class HourTemperature {
     }
 
     public void printInfo() {
+        System.out.println("--------------------------------------------------");
         System.out.println("Time: " + time);
         System.out.println("Temperature: " + tempC);
         System.out.println("Humidity: " + humidity);
         System.out.println("Temperature Image: " + icon);
-        System.out.println("--------------------------------------------------");
     }
 }

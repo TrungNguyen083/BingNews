@@ -6,15 +6,18 @@ import java.util.UUID;
 public class WeatherInfo {
     private String ID;
     private String locationName;
-    private List<HourTemperature> listHourTemperature;
+
+    private String countryName;
     private String localTime;
+    private List<HourTemperature> listHourTemperature;
 
     public WeatherInfo() {
     }
 
-    public WeatherInfo(String locationName, String localTime, List<HourTemperature> listHourTemperature) {
+    public WeatherInfo(String locationName, String countryName, String localTime, List<HourTemperature> listHourTemperature) {
         this.ID = UUID.randomUUID().toString();
         this.locationName = locationName;
+        this.countryName = countryName;
         this.localTime = localTime;
         this.listHourTemperature = listHourTemperature;
     }
@@ -25,6 +28,10 @@ public class WeatherInfo {
 
     public String getLocationName() {
         return locationName;
+    }
+
+    public String getCountryName() {
+        return countryName;
     }
 
     public List<HourTemperature> getListHourTemperature() {

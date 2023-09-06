@@ -4,16 +4,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class WeatherConfig implements APIConfig{
+public class SportConfig implements APIConfig {
     private String method;
     private String uri;
     private String keyName;
     private String keyValue;
     private String hostName;
     private String hostValue;
-    private String forecastTag;
-    private List<PropertyMap> weatherMappings;
-    private HourTag hourTag;
+    private String itemTag;
+    private List<PropertyMap> sportMappings;
+    private MatchTag matchTag;
 
     @JsonProperty("method")
     public String getMethod() { return method; }
@@ -45,19 +45,18 @@ public class WeatherConfig implements APIConfig{
     @JsonProperty("hostValue")
     public void setHostValue(String value) { this.hostValue = value; }
 
-    @JsonProperty("forecastTag")
-    public String getForecastTag() { return forecastTag; }
-    @JsonProperty("forecastTag")
-    public void setForecastTag(String value) { this.forecastTag = value; }
+    @JsonProperty("itemTag")
+    public String getItemTag() { return itemTag; }
+    @JsonProperty("itemTag")
+    public void setItemTag(String value) { this.itemTag = value; }
 
-    @JsonProperty("weatherMappings")
-    public List<PropertyMap> getWeatherMappings() { return weatherMappings; }
-    @JsonProperty("weatherMappings")
-    public void setWeatherMappings(List<PropertyMap> value) { this.weatherMappings = value; }
+    @JsonProperty("sportMappings")
+    public List<PropertyMap> getSportMappings() { return sportMappings; }
+    @JsonProperty("sportMappings")
+    public void setSportMappings(List<PropertyMap> value) { this.sportMappings = value; }
 
-    @JsonProperty("hourTag")
-    public HourTag getHourTag() { return hourTag; }
-    @JsonProperty("hourTag")
-    public void setHourTag(HourTag value) { this.hourTag = value; }
-
+    @JsonProperty("matchTag")
+    public MatchTag getMatchTag() { return matchTag; }
+    @JsonProperty("matchTag")
+    public void setMatchTag(MatchTag value) { this.matchTag = value; }
 }
