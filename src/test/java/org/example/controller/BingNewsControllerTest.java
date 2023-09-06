@@ -2,19 +2,15 @@ package org.example.controller;
 
 import junit.framework.TestCase;
 import org.example.model.SportInfo;
+import org.example.model.TopNews;
 import org.example.model.WeatherInfo;
-import org.example.model.config.BingNewsConfig;
-import org.example.model.config.PropertyMapConfig;
+import org.example.model.config.*;
 import org.example.model.News;
-import org.example.model.config.SportConfig;
-import org.example.model.config.WeatherConfig;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 public class BingNewsControllerTest extends TestCase {
@@ -41,7 +37,6 @@ public class BingNewsControllerTest extends TestCase {
 
         WeatherInfo weatherInfo = BingNewsController.getWeatherInfo(weatherConfig);
 
-        weatherInfo.printInfo();
         assertNotNull(weatherInfo);
     }
 
@@ -54,28 +49,30 @@ public class BingNewsControllerTest extends TestCase {
 
         SportInfo sportInfo = BingNewsController.getSportInfo(sportConfig);
         sportInfo.printInfo();
-
+        assertNotNull(sportInfo);
     }
 
     public void testGetMicrosoftFeed() {
     }
 
-    public void testGetTopNews() {
+    public void testGetTopNews() throws Exception {
+        String topNewsConfigPath = ".\\src\\main\\resources\\TopNewsConfig.json";
+        TopNewsConfig topNewsConfig = ConfigService.readConfig(topNewsConfigPath, TopNewsConfig.class);
+
+        List<TopNews> topNewsList = BingNewsController.getTopNews(topNewsConfig);
+
+        assertNotNull(topNewsList);
     }
 
     public void testGetTrendingNews() {
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        // Format the current date using the formatter
+        String formattedDate = currentDate.format(formatter);
+
+        System.out.println("Formatted Date (dd/MM/yy): " + formattedDate);
     }
 
-    @Test
-    public void test() throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.weatherapi.com/v1/forecast.json?key=f845cd8d15dc447784562628232208&q=Quan%2012,Ho%20Chi%20Minh"))
-                .header("X-RapidAPI-Key", "1")
-                .header("X-RapidAPI-Host", "1")
-                .method("GET", HttpRequest.BodyPublishers.noBody())
-                .build();
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
-    }
 
 }

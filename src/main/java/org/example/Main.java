@@ -3,10 +3,7 @@ package org.example;
 import org.example.controller.BingNewsController;
 import org.example.controller.ConfigService;
 import org.example.model.*;
-import org.example.model.config.BingNewsConfig;
-import org.example.model.config.PropertyMapConfig;
-import org.example.model.config.SportConfig;
-import org.example.model.config.WeatherConfig;
+import org.example.model.config.*;
 
 import java.util.List;
 
@@ -24,7 +21,7 @@ public class Main {
         List<FinancialInfo> financialInfoList = BingNewsController.getFinancialInfo();
         SportInfo sportInfoList = BingNewsController.getSportInfo(new SportConfig());
         List<MicrosoftFeed> microsoftFeedList = BingNewsController.getMicrosoftFeed();
-        List<TopNews> topNewsList = BingNewsController.getTopNews();
+        List<TopNews> topNewsList = BingNewsController.getTopNews(new TopNewsConfig());
         List<TrendingNews> trendingNewsList = BingNewsController.getTrendingNews();
     }
 

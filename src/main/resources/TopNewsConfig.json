@@ -1,0 +1,39 @@
+{
+  "method": "GET",
+  "uri": "https://newsdata.io/api/1/news?country=vi&apikey=pub_2891831f1a972bdf704a64dc0dd98d127c85e",
+  "keyName": "X-RapidAPI-Key",
+  "keyValue": "1",
+  "hostName": "X-RapidAPI-Host",
+  "hostValue": "1",
+  "itemTag": "results",
+  "topNewsMappings": [
+    {
+      "propertyName": "articleId",
+      "tagName": "/article_id"
+    },
+    {
+      "propertyName": "title",
+      "tagName": "/title"
+    },
+    {
+      "propertyName": "link",
+      "tagName": "/link"
+    },
+    {
+      "propertyName": "description",
+      "tagName": "/description"
+    },
+    {
+      "propertyName": "pubDate",
+      "tagName": "/pubDate"
+    },
+    {
+      "propertyName": "image",
+      "tagName": "/image_url"
+    },
+    {
+      "propertyName": "sourceId",
+      "tagName": "/source_id"
+    }
+  ]
+}
