@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JDBCNewsRepository implements NewsRepository {
+public class JdbcNewsRepository implements NewsRepository {
     private static final String SELECT_ALL_NEWS = "SELECT * FROM News";
     private static final String INSERT_NEWS = "INSERT INTO News (guid, title, description, link, pubDate, image) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String SELECT_GUID = "SELECT COUNT(*) FROM News WHERE guid = ?";

@@ -1,28 +1,24 @@
 package org.example.controller;
 
 import junit.framework.TestCase;
-import org.example.model.SportInfo;
-import org.example.model.TopNews;
-import org.example.model.WeatherInfo;
+import org.example.ORM.repository.AdRepository;
+import org.example.ORM.repository.implement.JdbcAdRepository;
+import org.example.model.*;
 import org.example.model.config.*;
-import org.example.model.News;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 public class BingNewsControllerTest extends TestCase {
 
     @Test
     public void testGetAllNews() throws Exception {
-        String bingNewsConfigPath = ".\\src\\main\\resources\\BingNewsConfig.json";
-        BingNewsConfig bingNewsConfig = ConfigService.readConfig(bingNewsConfigPath, BingNewsConfig.class);
-        String mappingConfigPath = ".\\src\\main\\resources\\MappingConfig.json";
-        PropertyMapConfig propertyMapConfig = ConfigService.readConfig(mappingConfigPath, PropertyMapConfig.class);
+        BingNewsController bingNewsController = new BingNewsController();
 
-        List<News> newsList = BingNewsController.getAllNews(bingNewsConfig, propertyMapConfig);
+        List<News> newsList = bingNewsController.getNewsService().getAllNews();
 
         assertTrue(newsList.size() > 0);
         assertNotNull(newsList);
@@ -32,10 +28,9 @@ public class BingNewsControllerTest extends TestCase {
     }
 
     public void testGetWeatherInfo() throws Exception {
-        String weatherConfigPath = ".\\src\\main\\resources\\WeatherConfig.json";
-        WeatherConfig weatherConfig = ConfigService.readConfig(weatherConfigPath, WeatherConfig.class);
+        BingNewsController bingNewsController = new BingNewsController();
 
-        WeatherInfo weatherInfo = BingNewsController.getWeatherInfo(weatherConfig);
+        WeatherInfo weatherInfo = bingNewsController.getWeatherInfoService().getWeatherInfo();
 
         assertNotNull(weatherInfo);
     }
@@ -44,11 +39,10 @@ public class BingNewsControllerTest extends TestCase {
     }
 
     public void testGetSportInfo() throws Exception {
-        String sportConfigPath = ".\\src\\main\\resources\\SportConfig.json";
-        SportConfig sportConfig = ConfigService.readConfig(sportConfigPath,SportConfig.class);
+        BingNewsController bingNewsController = new BingNewsController();
 
-        SportInfo sportInfo = BingNewsController.getSportInfo(sportConfig);
-        sportInfo.printInfo();
+        SportInfo sportInfo = bingNewsController.getSportInfoService().getSportInfo();
+
         assertNotNull(sportInfo);
     }
 
@@ -56,22 +50,42 @@ public class BingNewsControllerTest extends TestCase {
     }
 
     public void testGetTopNews() throws Exception {
-        String topNewsConfigPath = ".\\src\\main\\resources\\TopNewsConfig.json";
-        TopNewsConfig topNewsConfig = ConfigService.readConfig(topNewsConfigPath, TopNewsConfig.class);
+        BingNewsController bingNewsController = new BingNewsController();
 
-        List<TopNews> topNewsList = BingNewsController.getTopNews(topNewsConfig);
+        List<TopNews> topNewsList = bingNewsController.getNewsService().getTopNews();
 
         assertNotNull(topNewsList);
     }
 
     public void testGetTrendingNews() {
-        LocalDate currentDate = LocalDate.now();
+        LocalDate yesterday = (LocalDate.now()).minusDays(1);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         // Format the current date using the formatter
-        String formattedDate = currentDate.format(formatter);
+        String formattedDate = yesterday.format(formatter);
 
         System.out.println("Formatted Date (dd/MM/yy): " + formattedDate);
+    }
+
+    @Test
+    public void testGetAllAdArticle() throws Exception {
+        String adConfigPath = ".\\src\\main\\resources\\AdArticleConfig.json";
+        AdArticleConfig adConfig = ConfigService.readConfig(adConfigPath, AdArticleConfig.class);
+        AdRepository adRepository = new JdbcAdRepository();
+        List<AdArticle> adArticleList = adRepository.getAllAd(adConfig);
+        for (var ad : adArticleList) {
+            ad.printInfo();
+        }
+    }
+
+    @Test
+    public void testInsertAdArticle() throws Exception {
+        String adConfigPath = ".\\src\\main\\resources\\AdArticleConfig.json";
+        AdArticleConfig adConfig = ConfigService.readConfig(adConfigPath, AdArticleConfig.class);
+        AdRepository adRepository = new JdbcAdRepository();
+        AdArticle adArticle = new AdArticle("test", "test", "test", "test", "test");
+
+        adRepository.insertAd(adArticle, adConfig);
     }
 
 
