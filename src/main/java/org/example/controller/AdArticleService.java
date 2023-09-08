@@ -1,11 +1,11 @@
-package org.example.ORM.repository.implement;
+package org.example.controller;
 
 import org.example.ORM.repository.AdRepository;
 import org.example.ORM.util.ConnectionManager;
-import org.example.controller.BingNewsController;
 import org.example.model.AdArticle;
 import org.example.model.config.AdArticleConfig;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,19 +14,32 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JdbcAdRepository implements AdRepository {
+public class AdArticleService implements AdRepository, Service{
+    AdArticleConfig adConfig;
+    ConfigService configService;
+    public AdArticleService() throws IOException {
+        readConfig();
+    }
+
     @Override
-    public List<AdArticle> getAllAd(AdArticleConfig adArticleConfig) throws Exception {
+    public void readConfig() throws IOException {
+        configService = new ConfigService();
+        String adConfigPath = ".\\src\\main\\resources\\AdArticleConfig.json";
+        adConfig = configService.readConfig(adConfigPath, AdArticleConfig.class);
+    }
+
+    @Override
+    public List<AdArticle> getAllAd() throws Exception {
         List<AdArticle> adArticleList = new ArrayList<>();
         Connection connection = ConnectionManager.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(adArticleConfig.getSelectAllAdSQL());
+        PreparedStatement preparedStatement = connection.prepareStatement(adConfig.getSelectAllAdSQL());
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
             AdArticle adArticle = new AdArticle();
-            for (var mapping : adArticleConfig.getAdMappings()) {
+            for (var mapping : adConfig.getAdMappings()) {
                 Method method = resultSet.getClass().getMethod(
-                        adArticleConfig.getGetMethod() + getPropertyType(mapping.getTagName()),
+                        adConfig.getGetMethod() + getPropertyType(mapping.getTagName()),
                         Class.forName(mapping.getTagName()));
                 BingNewsController.setPropertyValue(adArticle,
                         mapping.getPropertyName(),
@@ -48,7 +61,7 @@ public class JdbcAdRepository implements AdRepository {
     }
 
     @Override
-    public void insertAd(AdArticle ad, AdArticleConfig adConfig) throws Exception {
+    public void insertAd(AdArticle ad) throws Exception {
         Connection connection = ConnectionManager.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(adConfig.getInsertAdSQL());
         int i = 1;

@@ -11,15 +11,21 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WeatherInfoService {
+public class WeatherInfoService implements Service{
     WeatherConfig weatherConfig;
     ConfigService configService;
 
     public WeatherInfoService() throws IOException {
+        readConfig();
+    }
+
+    @Override
+    public void readConfig() throws IOException {
         configService = new ConfigService();
         String weatherConfigPath = ".\\src\\main\\resources\\WeatherConfig.json";
         weatherConfig = configService.readConfig(weatherConfigPath, WeatherConfig.class);
     }
+
     public WeatherInfo getWeatherInfo() throws Exception {
         HttpResponse<String> response = BingNewsController.getAPIResponse(weatherConfig);
         return parseWeatherInfo(response.body(), weatherConfig);

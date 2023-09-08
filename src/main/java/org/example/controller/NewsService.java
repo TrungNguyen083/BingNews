@@ -2,9 +2,6 @@ package org.example.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.ORM.repository.AdRepository;
-import org.example.ORM.repository.implement.JdbcAdRepository;
-import org.example.model.AdArticle;
 import org.example.model.News;
 import org.example.model.TopNews;
 import org.example.model.TrendingNews;
@@ -19,14 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class NewsService {
+public class NewsService implements Service{
     BingNewsConfig bingNewsConfig;
     PropertyMapConfig propertyMapConfig;
     TopNewsConfig topNewsConfig;
-    AdArticleConfig adConfig;
     ConfigService configService;
 
     public NewsService() throws IOException {
+        readConfig();
+    }
+
+    @Override
+    public void readConfig() throws IOException{
         configService = new ConfigService();
         String bingNewsConfigPath = ".\\src\\main\\resources\\BingNewsConfig.json";
         bingNewsConfig = configService.readConfig(bingNewsConfigPath, BingNewsConfig.class);
@@ -34,9 +35,8 @@ public class NewsService {
         propertyMapConfig = configService.readConfig(mappingConfigPath, PropertyMapConfig.class);
         String topNewsConfigPath = ".\\src\\main\\resources\\TopNewsConfig.json";
         topNewsConfig = configService.readConfig(topNewsConfigPath, TopNewsConfig.class);
-        String adConfigPath = ".\\src\\main\\resources\\AdArticleConfig.json";
-        adConfig = configService.readConfig(adConfigPath, AdArticleConfig.class);
     }
+
     public List<News> getAllNews() throws Exception {
         List<Channel> allChannel = getAllChannel(bingNewsConfig);
         List<News> newsList = new ArrayList<>();
@@ -57,7 +57,16 @@ public class NewsService {
         return newsList;
     }
 
-    public String getImageValue(Node item, Channel channel) throws IOException {
+    public List<TrendingNews> getTrendingNews() {
+        return null;
+    }
+
+    public List<TopNews> getTopNews() throws Exception {
+        HttpResponse<String> response = BingNewsController.getAPIResponse(topNewsConfig);
+        return parseTopNews(response.body(), topNewsConfig);
+    }
+
+    private String getImageValue(Node item, Channel channel) throws IOException {
         String imageConfigPath = ".\\src\\main\\resources\\ImageConfig.json";
         ImageConfig imageConfig = configService.readConfig(imageConfigPath, ImageConfig.class);
         Channel matchingChannel = imageConfig.getChannels()
@@ -71,9 +80,7 @@ public class NewsService {
         return mapImageConfig(item, channel);
     }
 
-
-
-    public <T> T parseNodeItem(Node item, Channel channel, Class<T> classTarget) throws Exception {
+    private  <T> T parseNodeItem(Node item, Channel channel, Class<T> classTarget) throws Exception {
         if (item.getNodeType() == Node.ELEMENT_NODE) {
             T instance = classTarget.newInstance();
             Element itemElement = (Element) item;
@@ -97,8 +104,6 @@ public class NewsService {
                 .collect(Collectors.toList());
     }
 
-
-
     private String mapImageConfig(Node item, Channel channelConfig) {
         for (var tag : channelConfig.getImgTagList()) {
             item = ((Element) item).getElementsByTagName(tag).item(0);
@@ -109,11 +114,6 @@ public class NewsService {
             return ((Element) item).getAttribute(channelConfig.getImgAttr());
         }
         return item.getTextContent();
-    }
-
-    public List<TopNews> getTopNews() throws Exception {
-        HttpResponse<String> response = BingNewsController.getAPIResponse(topNewsConfig);
-        return parseTopNews(response.body(), topNewsConfig);
     }
 
     private List<TopNews> parseTopNews(String responseBody, TopNewsConfig topNewsConfig) throws Exception {
@@ -130,18 +130,5 @@ public class NewsService {
             topNewsList.add(topNews);
         }
         return topNewsList;
-    }
-
-    public List<AdArticle> getAdArticles() throws Exception {
-        AdRepository adRepository = new JdbcAdRepository();
-        List<AdArticle> adArticleList = adRepository.getAllAd(adConfig);
-        for (var ad : adArticleList) {
-            ad.printInfo();
-        }
-        return adArticleList;
-    }
-
-    public List<TrendingNews> getTrendingNews() {
-        return null;
     }
 }

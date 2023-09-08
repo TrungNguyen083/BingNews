@@ -1,7 +1,7 @@
 package org.example.model;
 
 public class TopNews {
-    private String articleId;
+    private String guid;
     private String title;
     private String link;
     private String description;
@@ -12,8 +12,8 @@ public class TopNews {
     public TopNews() {
     }
 
-    public TopNews(String articleId, String title, String link, String description, String pubDate, String image, String sourceID) {
-        this.articleId = articleId;
+    public TopNews(String guid, String title, String link, String description, String pubDate, String image, String sourceID) {
+        this.guid = guid;
         this.title = title;
         this.link = link;
         this.description = description;
@@ -23,7 +23,7 @@ public class TopNews {
     }
 
     public String getArticleId() {
-        return articleId;
+        return guid;
     }
 
     public String getTitle() {
@@ -51,7 +51,7 @@ public class TopNews {
     }
 
     public void printInfo() {
-        System.out.println("Article ID: " + articleId);
+        System.out.println("Guid: " + guid);
         System.out.println("Title: " + title);
         System.out.println("Link: " + link);
         System.out.println("Description: " + description);

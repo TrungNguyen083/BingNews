@@ -8,7 +8,7 @@
   "itemTag": "results",
   "topNewsMappings": [
     {
-      "propertyName": "articleId",
+      "propertyName": "guid",
       "tagName": "/article_id"
     },
     {

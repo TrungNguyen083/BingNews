@@ -5,11 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class News {
     private String guid;
     private String title;
-    private String description;
     private String link;
+    private String description;
     private String pubDate;
     private String image;
-    private Category category;
 
     public News() {
     }
@@ -32,11 +31,6 @@ public class News {
         System.out.println("Link: " + this.link);
         System.out.println("Image: " + this.image);
     }
-
-    @JsonProperty("category")
-    public Category getCategories() { return category; }
-    @JsonProperty("category")
-    public void setCategories(Category value) { this.category = value; }
 
     @JsonProperty("title")
     public String getTitle() { return title; }

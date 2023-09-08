@@ -2,22 +2,20 @@ package org.example.controller;
 
 import junit.framework.TestCase;
 import org.example.ORM.repository.AdRepository;
-import org.example.ORM.repository.implement.JdbcAdRepository;
 import org.example.model.*;
 import org.example.model.config.*;
 import org.junit.Test;
-
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class BingNewsControllerTest extends TestCase {
     ConfigService configService = new ConfigService();
+    ServiceFactory defaultFactory = new DefaultServiceFactory();
 
     @Test
     public void testGetAllNews() throws Exception {
-        BingNewsController bingNewsController = new BingNewsController();
+        BingNewsController bingNewsController = new BingNewsController(defaultFactory);
 
         List<News> newsList = bingNewsController.getNewsService().getAllNews();
 
@@ -29,9 +27,10 @@ public class BingNewsControllerTest extends TestCase {
     }
 
     public void testGetWeatherInfo() throws Exception {
-        BingNewsController bingNewsController = new BingNewsController();
+        BingNewsController bingNewsController = new BingNewsController(defaultFactory);
 
         WeatherInfo weatherInfo = bingNewsController.getWeatherInfoService().getWeatherInfo();
+        weatherInfo.printInfo();
 
         assertNotNull(weatherInfo);
     }
@@ -40,7 +39,7 @@ public class BingNewsControllerTest extends TestCase {
     }
 
     public void testGetSportInfo() throws Exception {
-        BingNewsController bingNewsController = new BingNewsController();
+        BingNewsController bingNewsController = new BingNewsController(defaultFactory);
 
         SportInfo sportInfo = bingNewsController.getSportInfoService().getSportInfo();
 
@@ -51,7 +50,7 @@ public class BingNewsControllerTest extends TestCase {
     }
 
     public void testGetTopNews() throws Exception {
-        BingNewsController bingNewsController = new BingNewsController();
+        BingNewsController bingNewsController = new BingNewsController(defaultFactory);
 
         List<TopNews> topNewsList = bingNewsController.getNewsService().getTopNews();
 
@@ -70,23 +69,22 @@ public class BingNewsControllerTest extends TestCase {
 
     @Test
     public void testGetAllAdArticle() throws Exception {
-        String adConfigPath = ".\\src\\main\\resources\\AdArticleConfig.json";
-        AdArticleConfig adConfig = configService.readConfig(adConfigPath, AdArticleConfig.class);
-        AdRepository adRepository = new JdbcAdRepository();
-        List<AdArticle> adArticleList = adRepository.getAllAd(adConfig);
-        for (var ad : adArticleList) {
-            ad.printInfo();
+        BingNewsController bingNewsController = new BingNewsController(defaultFactory);
+        List<AdArticle> adArticleList = bingNewsController.getAdArticleService().getAllAd();
+        for (var item : adArticleList) {
+            item.printInfo();
         }
+        assertNotNull(adArticleList);
     }
 
     @Test
     public void testInsertAdArticle() throws Exception {
         String adConfigPath = ".\\src\\main\\resources\\AdArticleConfig.json";
         AdArticleConfig adConfig = configService.readConfig(adConfigPath, AdArticleConfig.class);
-        AdRepository adRepository = new JdbcAdRepository();
+        AdRepository adRepository = new AdArticleService();
         AdArticle adArticle = new AdArticle("test", "test", "test", "test", "test");
 
-        adRepository.insertAd(adArticle, adConfig);
+        adRepository.insertAd(adArticle);
     }
 
 

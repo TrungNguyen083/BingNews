@@ -11,14 +11,20 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SportInfoService {
+public class SportInfoService implements Service{
     SportConfig sportConfig;
     ConfigService configService;
-    public SportInfoService() throws IOException {
+    public SportInfoService() throws IOException{
+        readConfig();
+    }
+
+    @Override
+    public void readConfig() throws IOException {
         configService = new ConfigService();
         String sportConfigPath = ".\\src\\main\\resources\\SportConfig.json";
         sportConfig = configService.readConfig(sportConfigPath,SportConfig.class);
     }
+
     public SportInfo getSportInfo() throws Exception {
         HttpResponse<String> response = BingNewsController.getAPIResponse(sportConfig);
         return parseSportInfo(response.body(), sportConfig);

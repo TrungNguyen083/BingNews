@@ -3,12 +3,12 @@ package org.example.controller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.example.ORM.repository.AdRepository;
 import org.example.model.config.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URL;
@@ -18,21 +18,27 @@ import java.net.http.HttpResponse;
 
 public class BingNewsController {
     private final NewsService newsService;
+    private final AdRepository adRepository;
     private final SportInfoService sportInfoService;
     private final WeatherInfoService weatherInfoService;
     private final FinancialInfoService financialInfoService;
     private final MicrosoftTeamService microsoftTeamService;
 
-    public BingNewsController() throws IOException {
-        newsService = new NewsService();
-        sportInfoService = new SportInfoService();
-        weatherInfoService = new WeatherInfoService();
-        financialInfoService = new FinancialInfoService();
-        microsoftTeamService = new MicrosoftTeamService();
+    public BingNewsController(ServiceFactory serviceFactory) throws IOException {
+        newsService = serviceFactory.createNewsService();
+        adRepository = serviceFactory.createAdArticleService();
+        sportInfoService = serviceFactory.createSportInfoService();
+        weatherInfoService = serviceFactory.createWeatherInfoService();
+        financialInfoService = serviceFactory.createFinancialInfoService();
+        microsoftTeamService = serviceFactory.createMicrosoftTeamService();
     }
 
     public NewsService getNewsService() {
         return newsService;
+    }
+
+    public AdRepository getAdArticleService() {
+        return adRepository;
     }
 
     public SportInfoService getSportInfoService() {
@@ -52,15 +58,6 @@ public class BingNewsController {
     }
 
     public static NodeList getNodeListFromRssUrl(String rssUrl) throws Exception {
-//        URL url = new URL(rssUrl);
-//        try (InputStream inputStream = url.openStream()) {
-//            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-//            DocumentBuilder db = dbf.newDocumentBuilder();
-//
-//            Document doc = db.parse(inputStream);
-//            doc.getDocumentElement().normalize();
-//            return doc.getElementsByTagName("item");
-//        }
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(new URL(rssUrl).openStream());
@@ -88,6 +85,4 @@ public class BingNewsController {
                 .build();
         return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
     }
-
-
 }
