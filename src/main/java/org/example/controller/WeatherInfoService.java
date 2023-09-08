@@ -13,15 +13,16 @@ import java.util.List;
 
 public class WeatherInfoService {
     WeatherConfig weatherConfig;
+    ConfigService configService;
 
     public WeatherInfoService() throws IOException {
+        configService = new ConfigService();
         String weatherConfigPath = ".\\src\\main\\resources\\WeatherConfig.json";
-        weatherConfig = ConfigService.readConfig(weatherConfigPath, WeatherConfig.class);
+        weatherConfig = configService.readConfig(weatherConfigPath, WeatherConfig.class);
     }
     public WeatherInfo getWeatherInfo() throws Exception {
         HttpResponse<String> response = BingNewsController.getAPIResponse(weatherConfig);
-        WeatherInfo weatherInfo = parseWeatherInfo(response.body(), weatherConfig);
-        return weatherInfo;
+        return parseWeatherInfo(response.body(), weatherConfig);
     }
 
     private WeatherInfo parseWeatherInfo(String responseBody, WeatherConfig weatherConfig) throws Exception {

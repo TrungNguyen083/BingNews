@@ -1,16 +1,10 @@
 package org.example.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.model.*;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.example.model.config.*;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.IOException;
@@ -21,18 +15,20 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BingNewsController {
-    private NewsService newsService;
-    private SportInfoService sportInfoService;
-    private WeatherInfoService weatherInfoService;
+    private final NewsService newsService;
+    private final SportInfoService sportInfoService;
+    private final WeatherInfoService weatherInfoService;
+    private final FinancialInfoService financialInfoService;
+    private final MicrosoftTeamService microsoftTeamService;
 
     public BingNewsController() throws IOException {
         newsService = new NewsService();
         sportInfoService = new SportInfoService();
         weatherInfoService = new WeatherInfoService();
+        financialInfoService = new FinancialInfoService();
+        microsoftTeamService = new MicrosoftTeamService();
     }
 
     public NewsService getNewsService() {
@@ -47,16 +43,28 @@ public class BingNewsController {
         return weatherInfoService;
     }
 
-    public static NodeList getNodeListFromRssUrl(String rssUrl) throws Exception {
-        URL url = new URL(rssUrl);
-        try (InputStream inputStream = url.openStream()) {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
+    public FinancialInfoService getFinancialInfoService() {
+        return financialInfoService;
+    }
 
-            Document doc = db.parse(inputStream);
-            doc.getDocumentElement().normalize();
-            return doc.getElementsByTagName("item");
-        }
+    public MicrosoftTeamService getMicrosoftTeamService() {
+        return microsoftTeamService;
+    }
+
+    public static NodeList getNodeListFromRssUrl(String rssUrl) throws Exception {
+//        URL url = new URL(rssUrl);
+//        try (InputStream inputStream = url.openStream()) {
+//            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+//            DocumentBuilder db = dbf.newDocumentBuilder();
+//
+//            Document doc = db.parse(inputStream);
+//            doc.getDocumentElement().normalize();
+//            return doc.getElementsByTagName("item");
+//        }
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.parse(new URL(rssUrl).openStream());
+        return doc.getElementsByTagName("item");
     }
 
     public static void setPropertyValue(Object obj, String fieldName, Object value) throws Exception {
@@ -81,21 +89,5 @@ public class BingNewsController {
         return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-
-    public List<AdArticle> getAdArticles() {
-        return null;
-    }
-
-    public List<FinancialInfo> getFinancialInfo() {
-        return null;
-    }
-
-    public List<MicrosoftFeed> getMicrosoftFeed() {
-        return null;
-    }
-
-    public List<TrendingNews> getTrendingNews() {
-        return null;
-    }
 
 }

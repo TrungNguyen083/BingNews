@@ -12,13 +12,13 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BingNewsController bingNewsController = new BingNewsController();
         List<News> newsList = bingNewsController.getNewsService().getAllNews();
-        List<AdArticle> adArticleList = bingNewsController.getAdArticles();
+        List<AdArticle> adArticleList = bingNewsController.getNewsService().getAdArticles();
         WeatherInfo weatherInfoList = bingNewsController.getWeatherInfoService().getWeatherInfo();
-        List<FinancialInfo> financialInfoList = bingNewsController.getFinancialInfo();
+        List<FinancialInfo> financialInfoList = bingNewsController.getFinancialInfoService().getFinancialInfo();
         SportInfo sportInfoList = bingNewsController.getSportInfoService().getSportInfo();
-        List<MicrosoftFeed> microsoftFeedList = bingNewsController.getMicrosoftFeed();
+        List<MicrosoftFeed> microsoftFeedList = bingNewsController.getMicrosoftTeamService().getMicrosoftFeed();
         List<TopNews> topNewsList = bingNewsController.getNewsService().getTopNews();
-        List<TrendingNews> trendingNewsList = bingNewsController.getTrendingNews();
+        List<TrendingNews> trendingNewsList = bingNewsController.getNewsService().getTrendingNews();
     }
 
 

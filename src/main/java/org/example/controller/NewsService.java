@@ -2,8 +2,12 @@ package org.example.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.ORM.repository.AdRepository;
+import org.example.ORM.repository.implement.JdbcAdRepository;
+import org.example.model.AdArticle;
 import org.example.model.News;
 import org.example.model.TopNews;
+import org.example.model.TrendingNews;
 import org.example.model.config.*;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -19,14 +23,19 @@ public class NewsService {
     BingNewsConfig bingNewsConfig;
     PropertyMapConfig propertyMapConfig;
     TopNewsConfig topNewsConfig;
+    AdArticleConfig adConfig;
+    ConfigService configService;
 
     public NewsService() throws IOException {
+        configService = new ConfigService();
         String bingNewsConfigPath = ".\\src\\main\\resources\\BingNewsConfig.json";
-        bingNewsConfig = ConfigService.readConfig(bingNewsConfigPath, BingNewsConfig.class);
+        bingNewsConfig = configService.readConfig(bingNewsConfigPath, BingNewsConfig.class);
         String mappingConfigPath = ".\\src\\main\\resources\\MappingConfig.json";
-        propertyMapConfig = ConfigService.readConfig(mappingConfigPath, PropertyMapConfig.class);
+        propertyMapConfig = configService.readConfig(mappingConfigPath, PropertyMapConfig.class);
         String topNewsConfigPath = ".\\src\\main\\resources\\TopNewsConfig.json";
-        topNewsConfig = ConfigService.readConfig(topNewsConfigPath, TopNewsConfig.class);
+        topNewsConfig = configService.readConfig(topNewsConfigPath, TopNewsConfig.class);
+        String adConfigPath = ".\\src\\main\\resources\\AdArticleConfig.json";
+        adConfig = configService.readConfig(adConfigPath, AdArticleConfig.class);
     }
     public List<News> getAllNews() throws Exception {
         List<Channel> allChannel = getAllChannel(bingNewsConfig);
@@ -35,14 +44,13 @@ public class NewsService {
         for (var channel : allChannel) {
             NodeList nodeList = BingNewsController.getNodeListFromRssUrl(channel.getRSSURL());
             for (int i = 0; i < nodeList.getLength(); i++) {
-                Channel channelConfig = channel;
-                channelConfig.setPropertyMaps(propertyMapConfig.getChannels()
+                channel.setPropertyMaps(propertyMapConfig.getChannels()
                         .stream()
                         .filter(x -> x.getChannelName().equals(channel.getChannelName()))
                         .findFirst()
                         .orElse(null)
                         .getPropertyMaps());
-                News news = parseNodeItem(nodeList.item(i), channelConfig, News.class);
+                News news = parseNodeItem(nodeList.item(i), channel, News.class);
                 newsList.add(news);
             }
         }
@@ -51,17 +59,16 @@ public class NewsService {
 
     public String getImageValue(Node item, Channel channel) throws IOException {
         String imageConfigPath = ".\\src\\main\\resources\\ImageConfig.json";
-        ImageConfig imageConfig = ConfigService.readConfig(imageConfigPath, ImageConfig.class);
-        Channel channelConfig = channel;
+        ImageConfig imageConfig = configService.readConfig(imageConfigPath, ImageConfig.class);
         Channel matchingChannel = imageConfig.getChannels()
                 .stream()
                 .filter(x -> x.getChannelName().equals(channel.getChannelName()))
                 .findFirst()
                 .orElse(null);
 
-        channelConfig.setImgTagList(matchingChannel != null ? matchingChannel.getImgTagList() : null);
-        channelConfig.setImgAttr(matchingChannel != null ? matchingChannel.getImgAttr() : null);
-        return mapImageConfig(item, channelConfig);
+        channel.setImgTagList(matchingChannel != null ? matchingChannel.getImgTagList() : null);
+        channel.setImgAttr(matchingChannel != null ? matchingChannel.getImgAttr() : null);
+        return mapImageConfig(item, channel);
     }
 
 
@@ -85,10 +92,9 @@ public class NewsService {
 
     private List<Channel> getAllChannel(BingNewsConfig bingNewsConfig) {
         var categories = bingNewsConfig.getCategories();
-        List<Channel> listChannel = categories.stream()
+        return categories.stream()
                 .flatMap(category -> category.getListChanel().stream())
                 .collect(Collectors.toList());
-        return listChannel;
     }
 
 
@@ -100,16 +106,14 @@ public class NewsService {
         if (item == null) return null;
 
         if (channelConfig.getImgAttr() != null) {
-            String imageUrl = ((Element) item).getAttribute(channelConfig.getImgAttr());
-            return imageUrl;
+            return ((Element) item).getAttribute(channelConfig.getImgAttr());
         }
         return item.getTextContent();
     }
 
     public List<TopNews> getTopNews() throws Exception {
         HttpResponse<String> response = BingNewsController.getAPIResponse(topNewsConfig);
-        List<TopNews> topNewsList = parseTopNews(response.body(), topNewsConfig);
-        return topNewsList;
+        return parseTopNews(response.body(), topNewsConfig);
     }
 
     private List<TopNews> parseTopNews(String responseBody, TopNewsConfig topNewsConfig) throws Exception {
@@ -126,5 +130,18 @@ public class NewsService {
             topNewsList.add(topNews);
         }
         return topNewsList;
+    }
+
+    public List<AdArticle> getAdArticles() throws Exception {
+        AdRepository adRepository = new JdbcAdRepository();
+        List<AdArticle> adArticleList = adRepository.getAllAd(adConfig);
+        for (var ad : adArticleList) {
+            ad.printInfo();
+        }
+        return adArticleList;
+    }
+
+    public List<TrendingNews> getTrendingNews() {
+        return null;
     }
 }

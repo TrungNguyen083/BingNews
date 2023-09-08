@@ -13,14 +13,15 @@ import java.util.List;
 
 public class SportInfoService {
     SportConfig sportConfig;
+    ConfigService configService;
     public SportInfoService() throws IOException {
+        configService = new ConfigService();
         String sportConfigPath = ".\\src\\main\\resources\\SportConfig.json";
-        sportConfig = ConfigService.readConfig(sportConfigPath,SportConfig.class);
+        sportConfig = configService.readConfig(sportConfigPath,SportConfig.class);
     }
     public SportInfo getSportInfo() throws Exception {
         HttpResponse<String> response = BingNewsController.getAPIResponse(sportConfig);
-        SportInfo sportInfo = parseSportInfo(response.body(), sportConfig);
-        return sportInfo;
+        return parseSportInfo(response.body(), sportConfig);
     }
 
 

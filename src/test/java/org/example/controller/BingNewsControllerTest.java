@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class BingNewsControllerTest extends TestCase {
+    ConfigService configService = new ConfigService();
 
     @Test
     public void testGetAllNews() throws Exception {
@@ -70,7 +71,7 @@ public class BingNewsControllerTest extends TestCase {
     @Test
     public void testGetAllAdArticle() throws Exception {
         String adConfigPath = ".\\src\\main\\resources\\AdArticleConfig.json";
-        AdArticleConfig adConfig = ConfigService.readConfig(adConfigPath, AdArticleConfig.class);
+        AdArticleConfig adConfig = configService.readConfig(adConfigPath, AdArticleConfig.class);
         AdRepository adRepository = new JdbcAdRepository();
         List<AdArticle> adArticleList = adRepository.getAllAd(adConfig);
         for (var ad : adArticleList) {
@@ -81,7 +82,7 @@ public class BingNewsControllerTest extends TestCase {
     @Test
     public void testInsertAdArticle() throws Exception {
         String adConfigPath = ".\\src\\main\\resources\\AdArticleConfig.json";
-        AdArticleConfig adConfig = ConfigService.readConfig(adConfigPath, AdArticleConfig.class);
+        AdArticleConfig adConfig = configService.readConfig(adConfigPath, AdArticleConfig.class);
         AdRepository adRepository = new JdbcAdRepository();
         AdArticle adArticle = new AdArticle("test", "test", "test", "test", "test");
 
