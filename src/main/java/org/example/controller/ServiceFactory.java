@@ -1,15 +1,24 @@
 package org.example.controller;
 
-import org.example.ORM.repository.AdRepository;
-
 import java.io.IOException;
 
-public interface ServiceFactory {
-    NewsService createNewsService() throws IOException;
-    AdRepository createAdArticleService() throws IOException;
-    SportInfoService createSportInfoService() throws IOException;
-    WeatherInfoService createWeatherInfoService() throws IOException;
-    FinancialInfoService createFinancialInfoService() throws IOException;
-    MicrosoftTeamService createMicrosoftTeamService() throws IOException;
+public class ServiceFactory {
+    public Service createService(String serviceType) throws IOException {
+        if (serviceType.equals("NewsService")) {
+            return new NewsService();
+        } else if (serviceType.equals("AdArticleService")) {
+            return new AdArticleService();
+        } else if (serviceType.equals("SportInfoService")) {
+            return new SportInfoService();
+        } else if (serviceType.equals("WeatherInfoService")) {
+            return new WeatherInfoService();
+        } else if (serviceType.equals("FinancialInfoService")) {
+            return new FinancialInfoService();
+        } else if (serviceType.equals("MicrosoftTeamService")) {
+            return new MicrosoftTeamService();
+        } else {
+            throw new IOException("Invalid service type");
+        }
+    }
 }
 

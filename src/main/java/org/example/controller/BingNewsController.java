@@ -2,19 +2,26 @@ package org.example.controller;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.example.ORM.repository.AdRepository;
 import org.example.model.config.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 
 public class BingNewsController {
     private final NewsService newsService;
@@ -24,13 +31,14 @@ public class BingNewsController {
     private final FinancialInfoService financialInfoService;
     private final MicrosoftTeamService microsoftTeamService;
 
-    public BingNewsController(ServiceFactory serviceFactory) throws IOException {
-        newsService = serviceFactory.createNewsService();
-        adRepository = serviceFactory.createAdArticleService();
-        sportInfoService = serviceFactory.createSportInfoService();
-        weatherInfoService = serviceFactory.createWeatherInfoService();
-        financialInfoService = serviceFactory.createFinancialInfoService();
-        microsoftTeamService = serviceFactory.createMicrosoftTeamService();
+    public BingNewsController() throws IOException {
+        ServiceFactory serviceFactory = new ServiceFactory();
+        newsService = (NewsService) serviceFactory.createService("NewsService");
+        adRepository = (AdRepository) serviceFactory.createService("AdArticleService");
+        sportInfoService = (SportInfoService) serviceFactory.createService("SportInfoService");
+        weatherInfoService = (WeatherInfoService) serviceFactory.createService("WeatherInfoService");
+        financialInfoService = (FinancialInfoService) serviceFactory.createService("FinancialInfoService");
+        microsoftTeamService = (MicrosoftTeamService) serviceFactory.createService("MicrosoftTeamService");
     }
 
     public NewsService getNewsService() {
@@ -61,7 +69,9 @@ public class BingNewsController {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(new URL(rssUrl).openStream());
-        return doc.getElementsByTagName("item");
+        var listItems = doc.getElementsByTagName("item");
+
+        return listItems;
     }
 
     public static void setPropertyValue(Object obj, String fieldName, Object value) throws Exception {

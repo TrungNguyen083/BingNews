@@ -11,7 +11,7 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WeatherInfoService implements Service{
+public class WeatherInfoService implements Service {
     WeatherConfig weatherConfig;
     ConfigService configService;
 
@@ -47,7 +47,7 @@ public class WeatherInfoService implements Service{
     private List<HourTemperature> parseHourTemperatures(WeatherConfig weatherConfig, JsonNode rootNode) throws Exception {
         List<HourTemperature> hourTemperatures = new ArrayList<>();
         JsonNode forecastNode = rootNode.at(weatherConfig.getForecastTag());
-        for (var item: forecastNode) {
+        for (var item : forecastNode) {
             JsonNode hourlyForecast = item.at(weatherConfig.getHourTag().getTag());
             parseHourItem(weatherConfig, hourTemperatures, hourlyForecast);
         }

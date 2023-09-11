@@ -1,0 +1,26 @@
+{
+  "method": "GET",
+  "uri": "https://assets.msn.com/service/Finance/Quotes?apikey=1hYoJsIRvPEnSkk0hlnJF2092mHqiz7xFenIFKa9uc&activityId=327233B8-20B5-4D1E-A061-7894E85F2577&ocid=finance-utils-peregrine&cm=vi-vn&it=app&ids=aqk2nm,aopnp2,ah7etc,a9j7bh,avyufr&wrapodata=false",
+  "keyName": "X-RapidAPI-Key",
+  "keyValue": "1",
+  "hostName": "X-RapidAPI-Host",
+  "hostValue": "1",
+  "stockMappings": [
+    {
+      "propertyName": "symbol",
+      "tagName": "/symbol"
+    },
+    {
+      "propertyName": "name",
+      "tagName": "/shortName"
+    },
+    {
+      "propertyName": "price",
+      "tagName": "/price"
+    },
+    {
+      "propertyName": "priceChangePercent",
+      "tagName": "/priceChangePercent"
+    }
+  ]
+}
