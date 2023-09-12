@@ -21,6 +21,7 @@ public class NewsService implements Service{
     PropertyMapConfig propertyMapConfig;
     TopNewsConfig topNewsConfig;
     ConfigService configService;
+    TrendingNewsConfig trendNewsConfig;
 
     public NewsService() throws IOException {
         readConfig();
@@ -35,6 +36,8 @@ public class NewsService implements Service{
         propertyMapConfig = configService.readConfig(mappingConfigPath, PropertyMapConfig.class);
         String topNewsConfigPath = ".\\src\\main\\resources\\TopNewsConfig.json";
         topNewsConfig = configService.readConfig(topNewsConfigPath, TopNewsConfig.class);
+        String trendNewsConfigPath = ".\\src\\main\\resources\\TrendingNewsConfig.json";
+        trendNewsConfig = configService.readConfig(trendNewsConfigPath, TrendingNewsConfig.class);
     }
 
     public List<News> getAllNews() throws Exception {
@@ -55,10 +58,6 @@ public class NewsService implements Service{
             }
         }
         return newsList;
-    }
-
-    public List<TrendingNews> getTrendingNews() {
-        return null;
     }
 
     public List<TopNews> getTopNews() throws Exception {
@@ -130,5 +129,19 @@ public class NewsService implements Service{
             topNewsList.add(topNews);
         }
         return topNewsList;
+    }
+
+    public List<TrendingNews> getTrendingNews() throws Exception {
+        List<Channel> allChannel = trendNewsConfig.getListChanel();
+        List<TrendingNews> trendingNews = new ArrayList<>();
+
+        for (var channel : allChannel) {
+            NodeList nodeList = BingNewsController.getNodeListFromRssUrl(channel.getRSSURL());
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                TrendingNews news = parseNodeItem(nodeList.item(i), channel, TrendingNews.class);
+                trendingNews.add(news);
+            }
+        }
+        return trendingNews;
     }
 }

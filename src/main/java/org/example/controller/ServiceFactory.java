@@ -16,6 +16,8 @@ public class ServiceFactory {
             return new FinancialInfoService();
         } else if (serviceType.equals("MicrosoftTeamService")) {
             return new MicrosoftTeamService();
+        } else if (serviceType.equals("CarouselService")) {
+            return new CarouselService();
         } else {
             throw new IOException("Invalid service type");
         }

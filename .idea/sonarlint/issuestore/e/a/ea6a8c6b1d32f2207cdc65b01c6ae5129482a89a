@@ -1,0 +1,9 @@
+
+g
+java:S2259/"EA "NullPointerException" could be thrown; "orElse()" can return null.(ıµüÏúÿÿÿÿ8±Í®–§1
+H
+java:S1168="+Return an empty collection instead of null.(¥¹ï8ÇÛõ›§1
+U
+java:S1874U"3Remove this use of "newInstance"; it is deprecated.(½Ì“íşÿÿÿÿ8ÄÍ®–§1
+o
+java:S6204h"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹8ÇÍ®–§1

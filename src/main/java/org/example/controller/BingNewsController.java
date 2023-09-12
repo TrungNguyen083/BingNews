@@ -22,6 +22,7 @@ public class BingNewsController {
     private final WeatherInfoService weatherInfoService;
     private final FinancialInfoService financialInfoService;
     private final MicrosoftTeamService microsoftTeamService;
+    private final CarouselService carouselService;
 
     public BingNewsController() throws IOException {
         ServiceFactory serviceFactory = new ServiceFactory();
@@ -31,6 +32,7 @@ public class BingNewsController {
         weatherInfoService = (WeatherInfoService) serviceFactory.createService("WeatherInfoService");
         financialInfoService = (FinancialInfoService) serviceFactory.createService("FinancialInfoService");
         microsoftTeamService = (MicrosoftTeamService) serviceFactory.createService("MicrosoftTeamService");
+        carouselService = (CarouselService) serviceFactory.createService("CarouselService");
     }
 
     public NewsService getNewsService() {
@@ -55,6 +57,10 @@ public class BingNewsController {
 
     public MicrosoftTeamService getMicrosoftTeamService() {
         return microsoftTeamService;
+    }
+
+    public CarouselService getCarouselService() {
+        return carouselService;
     }
 
     public static NodeList getNodeListFromRssUrl(String rssUrl) throws Exception {

@@ -1,0 +1,31 @@
+{
+  "listChanel": [
+    {
+      "channelID": "1",
+      "channelName": "GoogleTrend",
+      "rssURL": "https://trends.google.com.vn/trends/trendingsearches/daily/rss?geo=VN",
+      "mappings": [
+        {
+          "propertyName": "title",
+          "tagName": "title"
+        },
+        {
+          "propertyName": "description",
+          "tagName": "description"
+        },
+        {
+          "propertyName": "link",
+          "tagName": "link"
+        },
+        {
+          "propertyName": "pubDate",
+          "tagName": "pubDate"
+        },
+        {
+          "propertyName": "guid",
+          "tagName": "link"
+        }
+      ]
+    }
+  ]
+}
