@@ -1,6 +1,5 @@
 package org.example.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.model.*;
@@ -40,8 +39,7 @@ public class FinancialInfoService implements Service {
         List<Currency> currencies = parseCurrency(currencyResponse.body());
         HttpResponse<String> stockResponse = BingNewsController.getAPIResponse(stockConfig);
         List<Stock> stocks = parseStock(stockResponse.body());
-        FinancialInfo financialInfo = new FinancialInfo(currencies, cryptos, stocks);
-        return financialInfo;
+        return new FinancialInfo(currencies, cryptos, stocks);
     }
 
     private List<Stock> parseStock(String responseBody) throws Exception {

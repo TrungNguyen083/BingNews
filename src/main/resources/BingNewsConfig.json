@@ -62,11 +62,6 @@
           "channelID": "1",
           "channelName": "laodong",
           "rssURL": "https://laodong.vn/rss/kinh-doanh.rss"
-        },
-        {
-          "channelID": "2",
-          "channelName": "tienphong",
-          "rssURL": "https://tienphong.vn/rss/kinh-te-3.rss"
         }
       ]
     },
@@ -126,11 +121,6 @@
           "channelID": "1",
           "channelName": "laodong",
           "rssURL": "https://laodong.vn/rss/suc-khoe.rss"
-        },
-        {
-          "channelID": "2",
-          "channelName": "tienphong",
-          "rssURL": "https://tienphong.vn/rss/suc-khoe-210.rss"
         }
       ]
     },

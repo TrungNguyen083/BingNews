@@ -3,6 +3,7 @@ package org.example.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.model.HourTemperature;
+import org.example.model.Pagination;
 import org.example.model.WeatherInfo;
 import org.example.model.config.WeatherConfig;
 
@@ -41,6 +42,7 @@ public class WeatherInfoService implements Service {
         }
         List<HourTemperature> hourTemperatures = parseHourTemperatures(weatherConfig, rootNode);
         BingNewsController.setPropertyValue(weatherInfo, weatherConfig.getHourTag().getPropertyName(), hourTemperatures);
+        weatherInfo.setPagination(new Pagination(hourTemperatures, 5));
         return weatherInfo;
     }
 

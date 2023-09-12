@@ -10,6 +10,7 @@ public class WeatherInfo {
     private String countryName;
     private String localTime;
     private List<HourTemperature> listHourTemperature;
+    private Pagination pagination;
 
     public WeatherInfo() {
     }
@@ -48,5 +49,13 @@ public class WeatherInfo {
         for (HourTemperature hourTemperature : listHourTemperature) {
             hourTemperature.printInfo();
         }
+    }
+
+    public Pagination getPagination() {
+        return pagination;
+    }
+
+    public void setPagination(Pagination pagination) {
+        this.pagination = pagination;
     }
 }

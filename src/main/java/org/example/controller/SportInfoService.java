@@ -3,6 +3,7 @@ package org.example.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.model.Match;
+import org.example.model.Pagination;
 import org.example.model.SportInfo;
 import org.example.model.config.SportConfig;
 
@@ -46,6 +47,7 @@ public class SportInfoService implements Service{
             }
             BingNewsController.setPropertyValue(sportInfo, sportConfig.getMatchTag().getPropertyName(), listMatch);
         }
+        sportInfo.setPagination(new Pagination(listMatch, 3));
         return sportInfo;
     }
 

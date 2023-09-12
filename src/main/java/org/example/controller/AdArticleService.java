@@ -22,8 +22,7 @@ public class AdArticleService implements AdRepository, Service {
     public List<AdArticle> getAllAd() {
         // Assuming you have an instance of EntityManager and a class representing the entity
         EntityManager entityManager = new EntityManager();
-        List<AdArticle> adArticleList = entityManager.getAllItems(AdArticle.class);
-        return adArticleList;
+        return entityManager.getAllItems(AdArticle.class);
     }
 
     @Override

@@ -5,10 +5,6 @@ import org.example.model.*;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,9 +20,6 @@ public class BingNewsControllerTest extends TestCase {
         assertNotNull(newsList);
     }
 
-    public void testGetAdArticles() {
-    }
-
     public void testGetWeatherInfo() throws Exception {
         BingNewsController bingNewsController = new BingNewsController();
 
@@ -35,9 +28,6 @@ public class BingNewsControllerTest extends TestCase {
         weatherInfo.printInfo();
 
         assertNotNull(weatherInfo);
-    }
-
-    public void testGetFinancialInfo() {
     }
 
     public void testGetSportInfo() throws Exception {
@@ -57,10 +47,6 @@ public class BingNewsControllerTest extends TestCase {
         List<TopNews> topNewsList = bingNewsController.getNewsService().getTopNews();
 
         assertNotNull(topNewsList);
-    }
-
-    public void testGetTrendingNews() {
-
     }
 
     @Test
@@ -107,5 +93,30 @@ public class BingNewsControllerTest extends TestCase {
         FinancialInfo financialInfo = bingNewsController.getFinancialInfoService().getFinancialInfo();
 
         assertNotNull(financialInfo);
+    }
+
+    public void testGetSportInfoWithPaging() throws Exception {
+        BingNewsController bingNewsController = new BingNewsController();
+        SportInfo sportInfo = bingNewsController.getSportInfoService().getSportInfo();
+
+        List<Match> matchList = sportInfo.getPagination().getCurrentPageItems();
+
+        assertTrue(matchList.size() == 3);
+    }
+
+    @Test
+    public void testGetWeatherInfoWithPaging() throws Exception {
+        BingNewsController bingNewsController = new BingNewsController();
+        WeatherInfo weatherInfo = bingNewsController.getWeatherInfoService().getWeatherInfo();
+
+        List<HourTemperature> hourTemperatures = weatherInfo.getPagination().getCurrentPageItems();
+        weatherInfo.getPagination().nextPage();
+        weatherInfo.getPagination().nextPage();
+        hourTemperatures = weatherInfo.getPagination().getCurrentPageItems();
+        assertTrue(hourTemperatures.size() == 5);
+        weatherInfo.getPagination().nextPage();
+        weatherInfo.getPagination().nextPage();
+        hourTemperatures = weatherInfo.getPagination().getCurrentPageItems();
+        assertTrue(hourTemperatures.size() == 4);
     }
 }

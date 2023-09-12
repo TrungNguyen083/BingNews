@@ -5,11 +5,13 @@ import java.util.List;
 public class SportInfo {
     private String date;
     private List<Match> matches;
+    private Pagination pagination;
     public SportInfo() {
     }
-    public SportInfo(String date, List<Match> matches) {
+    public SportInfo(String date, List<Match> matches, Pagination pagination) {
         this.date = date;
         this.matches = matches;
+        this.pagination = pagination;
     }
 
     public String getDate() {
@@ -27,5 +29,13 @@ public class SportInfo {
         for (Match match : matches) {
             match.printInfo();
         }
+    }
+
+    public Pagination getPagination() {
+        return pagination;
+    }
+
+    public void setPagination(Pagination pagination) {
+        this.pagination = pagination;
     }
 }
